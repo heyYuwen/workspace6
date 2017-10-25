@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+     <ul id="content">
+     	<li>11111 <input type="button" value="上移"/> <input type="button" value="下移"></li>
+     	<li>22222 <input type="button" value="上移"/> <input type="button" value="下移"></li>
+     	<li>33333 <input type="button" value="上移"/> <input type="button" value="下移"></li>
+     	<li>44444 <input type="button" value="上移"/> <input type="button" value="下移"></li>
+     	<li>55555 <input type="button" value="上移"/> <input type="button" value="下移"></li>
+     	<li>66666 <input type="button" value="上移"/> <input type="button" value="下移"></li>
+     </ul>
+     
+     <script>
+     	var Ocon=document.getElementById("content")
+     	var Obtn=document.getElementsByTagName("input")
+     	
+     	   
+     	for( var i=0;i<Obtn.length;i++){
+     		
+     		Obtn[i].index=i
+     		Obtn[i].onclick=function(){
+     		if(this.index%2==0){
+     			//下
+     			if(first(Ocon)==this.parentNode){
+     				alert(" 到头了")
+     				return
+     			}Ocon.insertBefore(this.parentNode, before(this.parentNode));
+
+     		}else{
+     			if(last(Ocon)==this.parentNode){
+     				alert("到尾了")
+     				return
+     			}
+     				Ocon.insertBefore(next(this.parentNode),this.parentNode)
+     			
+     		}
+     			
+     		}
+     		 	
+     	function first(obj){
+     		return obj.firstElementChild || obj.firstChild
+     	}
+     	function last(obj){
+     		return obj.lastElementChild || obj.lastChild
+     	}
+     	function next(obj){
+     		return obj.nextElementSibling || obj.nextSibling
+     	}
+     	function before(obj){
+     		return obj.previousElementSibling || obj.previousSibling
+     	}
+     		
+     	}
+    
+     </script>
+     
+	</body>
+</html>

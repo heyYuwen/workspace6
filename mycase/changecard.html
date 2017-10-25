@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<style>
+*{
+	margin:0;
+	padding:0;
+	}
+li{
+	list-style:none;
+	}
+.tab{
+	width:300px;
+	margin:0 auto;
+	border:1px solid #ccc;
+	float: left;
+	}
+.btn_group {
+	border-bottom:1px solid #ccc;
+	position:relative
+	}
+.btn_group li{
+	width:80px;
+	height:30px;
+	line-height:30px;
+	font-size:14px;
+	cursor:pointer
+	}
+#icon{
+	width:20px;
+	height:10px;
+	background:#000;
+	position:absolute;
+	right:-20px
+	}
+.btn_group li{
+	float:left;
+	}
+.btn_group li.active{
+	background:red;
+	color:#fff
+	}
+.cont{
+	height:300px;
+	display:none
+	}
+ul{
+	overflow: hidden;
+}
+.clear{ zoom:1}
+.clear:after{ content:""; display:block; clear:both;}
+</style>
+</head>
+
+<body>
+<div id="tab" class="tab">
+  <ul class="btn_group" >
+  	<li class="active">选项一</li>
+    <li>选项二</li>
+    <li>选项三</li>
+  </ul> 
+  <div class="cont" style="display:block">1111</div>
+  <div class="cont">2222</div>
+  <div class="cont">3333</div>
+</div>
+
+<div id="tab2" class="tab">
+  <ul class="btn_group" >
+  	<li class="active">自动播放</li>
+    <li>选项二</li>
+    <li>选项三</li>
+  </ul> 
+  <div class="cont" style="display:block">1111</div>
+  <div class="cont">2222</div>
+  <div class="cont">3333</div>
+</div>
+
+
+
+<script>
+	
+	//获取属性
+	function Tab(json){
+		this.json = json;
+		this.oTab= document.getElementById(this.json['id']);
+	//	this.oTab= document.getElementsByClassName(this.json['id'])
+		this.oUl = this.oTab.getElementsByTagName('ul')[0];
+		this.aLis = this.oUl.getElementsByTagName('li');
+		this.aCont = this.oTab.getElementsByClassName("cont");
+		this.timer = null;
+		this.iNum=0;
+	}
+	//初始化执行函数
+	Tab.prototype.init=function(){
+		var This = this;
+		for(var i=0; i<this.aLis.length;i++){
+			this.aLis[i].index=i;
+			this.aLis[i][This.json.ev]=function(){
+				var LiThis=this;
+				This.change(LiThis);//调用对象下的change方法
+			}
+			
+		}
+	};
+	//点击方法
+	Tab.prototype.change=function(LiThis){
+		for(var i=0; i<this.aLis.length;i++){
+			this.aLis[i].className='';
+			this.aCont[i].style.display='none';
+		}
+		LiThis.className='active';
+		this.aCont[LiThis.index].style.display='block';
+		
+		this.iNum=LiThis.index;
+	};
+	var t1=new Tab({
+		id:'tab',
+		ev:'onclick'
+	});
+	t1.init();
+	
+	//第二个选项卡继承第一个选项卡的内容
+	function extend(son,parents){
+		for(var arr in parents){
+			son[arr]=parents[arr]
+		}
+	}
+    //继承的方法
+	extend(Tab2.prototype,Tab.prototype)
+	function Tab2(id){
+				Tab.call(this,id)
+			}
+    //  自动播放
+	Tab2.prototype.autoPlay=function(){
+		var This = this
+		this.timer=setInterval(function(){
+			This.iNum++;
+			This.iNum%=This.aLis.length;
+			for(var i=0; i<This.aLis.length;i++){
+				This.aLis[i].className='';
+				This.aCont[i].style.display='none';
+			}
+			This.aLis[This.iNum].className='active';
+			This.aCont[This.iNum].style.display='block';
+		},1000)
+	};
+	
+		var t2=new Tab2({
+		id:'tab2',
+		ev:'onclick'
+	});
+	t2.init();
+	t2.autoPlay();
+	
+</script>
+</body>
+</html>

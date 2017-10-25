@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			.box{
+				border: 1px solid saddlebrown;
+				position: absolute;
+				
+			}
+		</style>
+	</head>
+	<body>
+		
+		<script>
+			
+			var x1,y1,x2,y2=0
+			var winH = document.documentElement.clientHeight || document.body.clientHeight;
+			var winW = document.documentElement.clientWidth || document.body.clientWidth;
+			
+			var timer=null
+		document.onmousedown=function(ev){
+				var ev=ev || window.event
+				var box=document.createElement("div")
+				 x1=ev.clientX
+				 y1=ev.clientY
+			
+		document.onmousemove=function(ev){
+				var ev=ev || window.event
+				document.body.appendChild(box)
+				 x2=ev.clientX
+				 y2=ev.clientY
+				 box.style.width=Math.abs(x2-x1)+'px'
+			     box.style.height=Math.abs(y2-y1)+'px'
+			if(x2>x1 && y2>y1){
+			    box.style.left=x1+'px'
+			    box.style.top=y1+'px'
+			    box.style.background="sandybrown"
+			}else if(x2>x1 && y2<y1){
+				box.style.left=x1+'px'
+				box.style.top=y2+'px'
+				box.style.background="#FFE4C4"
+			}else if(x1>x2 && y1>y2){
+				box.style.left=x2+'px'
+				box.style.top=y2+'px'
+				box.style.background="skyblue"
+			}else if(x1>x2 && y1<y2){
+				box.style.left=x2+'px'
+				box.style.top=y1+'px'
+				box.style.background="yellow"
+			}
+			
+			console.log(x2-x1)
+			box.className="box"	
+			
+		document.onmouseup=function(){
+			
+			document.onmousemove=null
+			animate(box,winH-box.offsetHeight)
+			}
+			}
+			
+			}
+			
+			
+			
+			function animate(obj,target){
+				clearInterval(obj.timer);
+				obj.timer=setInterval(function(){
+					
+					var speed = (Math.abs(target-obj.offsetTop))/7;
+					
+					speed=speed>0?Math.ceil((Math.abs(target-obj.offsetTop))/7):Math.floor((Math.abs(target-obj.offsetTop))/7);
+					
+					if(obj.offsetTop==target){
+						clearInterval(obj.timer);
+					}else{
+						obj.style.top = obj.offsetTop+speed+'px';
+					
+					}
+					
+				
+				},30)
+			}
+		</script>
+	</body>
+</html>

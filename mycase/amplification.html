@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{margin: 0;padding: 0;}
+			#box{width: 180px;height: 180px;background: url(img/center0.jpg) no-repeat;
+			position: relative;float: left;overflow: hidden;}
+			#box1{width: 180px; height: 180px; background: #333333;position: absolute;left: 0;top: 0;opacity: 0;}
+			#move{width: 80px; height: 80px;background: pink;opacity: 0.5;position: absolute;left: 0;top: 0;cursor: move;
+			display: none;}
+			#bigbox{width: 500px;height: 500px;overflow: hidden;margin-left: 10px;float: left;position: relative;}
+			#pic{position: absolute;left: 0;top: 0;width: 900px;height: 900px;}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div id="box1"></div>
+			<div id="move"></div>
+		</div>
+		<div id="bigbox"><img src="img/center1.jpg" id="pic"/></div>
+		<script>
+			var Box=document.getElementById("box")
+			var Box1=document.getElementById("box1")
+			var Move=document.getElementById("move")
+			var bigBox=document.getElementById("bigbox")
+			var Pic=document.getElementById("pic")
+			
+			var Bw=Box1.offsetWidth-Move.offsetWidth
+			var Bh=Box1.offsetHeight-Move.offsetHeight
+			
+			var Pw=bigBox.offsetWidth-Pic.offsetWidth
+			var Ph=bigBox.offsetHeight-Pic.offsetHeight
+			
+			Box.onmouseover=function(){
+				Move.style.display="block"
+			}
+			Box.onmouseout=function(){
+				Move.style.display="none"
+			}
+			
+			Move.onmousedown=function(ev){
+				var ev=ev || event
+				var dx=ev.clientX-Move.offsetLeft
+				var dy=ev.clientY-Move.offsetTop
+				
+				document.onmousemove=function(ev){
+					var ev=ev || event
+					var L=ev.clientX-dx
+					var T=ev.clientY-dy
+					if(T<=0){
+						T=0
+					}else if(T>=Bh){
+						T=Bh
+					}
+					if(L<=0){
+						L=0
+					}else if(L>=Bw){
+						L=Bw
+					}
+					Move.style.left=L+"px"
+					Pic.style.left=L/Bw*Pw+"px"
+					Move.style.top=T+"px"
+					Pic.style.top=T/Bh*Ph+"px"
+				}
+				document.onmouseup=function(){
+					document.onmouseup=document.onmousemove=null
+				}
+			}
+		</script>
+	</body>
+</html>

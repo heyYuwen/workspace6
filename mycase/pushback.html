@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			#box{
+				width: 100px;
+				height: 100px;
+				background: #FF0000;
+				border-radius: 50%;
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<input type="button" value="返回" id="blank" />
+		<div id="box"></div>
+		
+		<script src="js/cookie.js"></script>
+		<script>
+			var oBtn=document.getElementById("blank")
+			var oBox=document.getElementById("box")
+			var arr=[{a:box.offsetLeft,b:box.offsetTop}]
+			var timer=null
+			
+			
+			oBox.onmousedown=function(ev){
+				var ev=ev || window.event
+				var odownx = ev.clientX-this.offsetLeft
+				var odowny = ev.clientY-this.offsetTop
+				console.log(odownx)
+				console.log(odowny)
+			document.onmousemove=function(ev){
+				var ev=ev || window.event
+				oBox.style.left=ev.clientX-odownx+'px'
+				oBox.style.top=ev.clientY-odowny+'px'
+				arr.push({a:box.offsetLeft,b:box.offsetTop})
+				
+			}
+			document.onmouseup=function(){
+				document.onmousedown=document.onmousemove=null
+				setCookie('x',oBox.offsetLeft,3)
+				setCookie('y',oBox.offsetTop,3)
+			
+			}
+						}
+			oBtn.onclick=function(){
+				
+				timer=setInterval(function(){
+				var list=arr.pop()
+			    list ? (oBox.style.left=list.a+'px',oBox.style.top=list.b+'px'):clearInterval(timer)
+			    list=null
+				},30)
+		
+			}
+
+		</script>
+	</body>
+</html>

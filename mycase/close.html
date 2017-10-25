@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.dialog{
+				position: absolute;
+				width: 120px;
+				height: 200px;
+				border: 1px solid sandybrown;
+			}
+			.dialog h2{
+				height: 30px;
+				width: 120px;
+				background: salmon;
+				font-size: 14px;
+			}
+			.dialog h2 span{
+				height: 20px;
+				width: 20px;
+				background: #CCCCCC;
+				position: absolute;
+				right: 5px;
+				top: 5px;
+			}
+		</style>
+	</head>
+	<body>
+		<input type="button" id="btn1" value="按钮一" />
+		<input type="button" id="btn2" value="按钮二" />
+		
+		
+		<script>
+			document.getElementById("btn1").onclick=function(){
+				var d1=new Dialog(this)
+				d1.init({
+					w:200,
+					h:200,
+					left:'center',
+					title:"弹窗一"
+				})
+			}
+			document.getElementById("btn2").onclick=function(){
+				var d2=new Dialog(this)
+				d2.init({
+					w:300,
+					h:300,
+					left:'rightbottom',
+					title:"弹窗二"
+				})
+			}
+			//构造一个Dialog函数
+			function Dialog(obj){
+				this.obj=obj
+				this.default={
+					w:200,
+					h:200,
+					left:'right',
+					title:"弹窗"
+				}
+			}
+			
+			//初始化
+			Dialog.prototype.init=function(optation){
+				extend(this.default,optation)
+				
+				if(!this.obj.off){
+				this.creatediv()
+				this.closecreatediv()
+				this.obj.off=true;
+				}
+			}
+			//创建div
+		    Dialog.prototype.creatediv=function(){
+		   	this.ocrebox=document.createElement("div")
+		   	this.ocrebox.className="dialog"
+		   	this.ocrebox.style.width=this.default.w+'px'
+		   	this.ocrebox.style.height=this.default.h+'px'
+		   	this.ocrebox.innerHTML=
+		   	`<div><h2>`+this.default.title+`<span>×</span></h2></div>`
+		   	
+		   
+		   	document.body.appendChild(this.ocrebox)
+		   	
+		   	if(this.default.left=='center'){
+		   		this.ocrebox.style.left=(document.documentElement.clientWidth-this.ocrebox.offsetWidth)/2+'px'
+		   		this.ocrebox.style.top=(document.documentElement.clientHeight-this.ocrebox.offsetHeight)/2+'px'
+		   	}else if(this.default.left=='rightbottom'){
+		   		this.ocrebox.style.left=document.documentElement.clientWidth-this.ocrebox.offsetWidth+'px'
+		   		this.ocrebox.style.top=document.documentElement.clientHeight-this.ocrebox.offsetHeight+'px'
+		   	}
+		   	//拖拽
+		   	    var This=this
+				this.ocrebox.onmousedown=function(ev){
+					var ev = ev||event;
+					This.down(ev)
+				
+				document.onmousemove=function(ev){
+					var ev = ev||event;
+					This.move(ev)
+					
+				document.onmouseup=function(){
+					This.up()
+				}	
+				}
+				}
+		   }
+		   //点击关闭删除
+		   Dialog.prototype.closecreatediv=function(){
+		   	var This=this
+		   	this.ocrebox.getElementsByTagName("span")[0].onclick=function(){
+		   		document.body.removeChild(This.ocrebox)
+		   		This.obj.off=false;
+		   	}
+		   }
+		   
+		//拖拽
+		Dialog.prototype.down=function(ev){
+			    var This=this
+				var ev = ev||event;				
+				this.ocrebox.downX=ev.clientX - this.ocrebox.offsetLeft;
+				this.ocrebox.downY=ev.clientY - this.ocrebox.offsetTop;
+			
+			};
+			
+		Dialog.prototype.move=function(ev){
+			 var ev=ev||event;
+		     this.ocrebox.style.left=ev.clientX-this.ocrebox.downX+'px'
+			 this.ocrebox.style.top=ev.clientY-this.ocrebox.downY+'px'
+			 
+			 if(this.ocrebox.offsetLeft<0){
+			 	this.ocrebox.style.left=0
+			 }else if(this.ocrebox.offsetLeft>=document.documentElement.clientWidth-this.ocrebox.offsetWidth){
+			 	this.ocrebox.style.left=document.documentElement.clientWidth-this.ocrebox.offsetWidth+'px'
+			 }
+			 
+			 
+			 if(this.ocrebox.offsetTop<=0){
+			 	this.ocrebox.style.top=0
+			 }else if(this.ocrebox.offsetTop>=document.documentElement.clientHeight-this.ocrebox.offsetHeight){
+			 	this.ocrebox.style.top=document.documentElement.clientHeight-this.ocrebox.offsetHeight+'px'
+			 }
+			 
+			
+			 
+		}
+		
+		Dialog.prototype.up=function(){
+			document.onmousemove=document.onmouseup=null;
+		}
+		
+		
+		
+		function extend(obj1,obj2){
+				for(var arr in obj2){
+					obj1[arr]=obj2[arr]
+				}
+			}
+			
+		</script>
+		
+	</body>
+</html>

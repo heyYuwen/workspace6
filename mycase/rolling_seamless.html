@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<style>
+*{
+	margin:0;
+	padding:0;
+	}
+li{
+	list-style:none;
+	}
+#wrap{
+	width:520px;
+	height:120px;
+	border:2px solid #ccc;
+	margin:0 auto;
+	}
+#wrap input{
+	width:20px;
+	height:120px;
+	display:block;
+	border:none;
+	cursor:pointer;
+	float:left;
+	
+	}
+#view{
+	width:480px;
+	height:120px;
+	position:relative;
+	float:left;
+	overflow:hidden;
+	} 
+#view ul{
+	width:0;
+	position:absolute;
+	left:0px;
+	}
+#view ul li{
+	width:120px;
+	height:120px;
+	float:left
+}
+#view ul li img{
+	display:block;
+	margin:10px auto;
+	}
+</style>
+</head>
+
+<body>
+<div id="wrap">
+	<input type="button" value="《" id="btn_left"/>
+    <div id="view">
+    	<ul id="pic_list">
+        	<li><img width="100" height="100" src="img/1.jpg" /></li>
+            <li><img width="100" height="100" src="img/2.jpg" /></li>
+            <li><img width="100" height="100" src="img/3.jpg" /></li>
+            <li><img width="100" height="100" src="img/4.jpg" /></li>
+        </ul>
+    </div>
+    <input type="button" value="》" id="btn_right"/>
+</div>
+<script>
+	var oWrap = document.getElementById("view");
+	var oUl=document.getElementById("pic_list");
+	var aLis=oUl.getElementsByTagName("li");
+	var oBtnLeft = document.getElementById("btn_left");
+	var oBtnRight = document.getElementById("btn_right");
+	var timer=null;
+	var Num=3;
+	oUl.innerHTML+=oUl.innerHTML;
+	oUl.style.width=aLis[0].offsetWidth*aLis.length+'px';
+	
+	function autoPlay(){
+		timer=setInterval(function(){
+			if(oUl.offsetLeft==-(oUl.offsetWidth/2)){
+				oUl.style.left=0;
+			}else if(oUl.offsetLeft>0){
+				oUl.style.left=-(oUl.offsetWidth/2)+'px';
+			}
+			oUl.style.left=oUl.offsetLeft+Num+'px';
+		},30)
+	};
+	autoPlay();
+	
+	oBtnLeft.onclick=function(){
+		Num=-3;	
+	};
+	
+	oBtnRight.onclick=function(){
+		Num=3;		
+	};
+	
+	oWrap.onmouseover=function(){
+		clearInterval(timer);
+	};
+	oWrap.onmouseout=function(){
+		autoPlay();
+	}
+	
+</script>
+</body>
+</html>

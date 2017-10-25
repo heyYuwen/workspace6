@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				padding: 0;
+				margin: 0;
+				font-size: 14px;
+				font-family: "微软雅黑";
+			}
+			#top{
+				width: 150px;
+				height: 40px;
+				background: #F5F5DC;
+				line-height: 40px;
+				text-align: center;
+			}
+			.dialog{
+				width: 150px;
+				height: 120px;
+				background: #FFE4C4;
+				padding: 0;
+				margin: 0;
+			}
+			ul{
+				padding: 0;
+				margin: 0;
+			}
+			ul li{
+				list-style: none;
+				width: 150px;
+				height: 40px;
+				text-align: center;
+                line-height: 40px;
+			}
+			ul li:hover{
+				background: mistyrose;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="top">北京</div>
+		
+			<!--<ul class="dialog">
+				<li>上海</li>
+				<li>杭州</li>
+				<li>武汉</li>
+			</ul>-->
+		
+		<script>
+
+			document.getElementById("top").onclick=function(){
+				
+				var s = new  Select();
+			    s.init({
+					data:['北京','上海','杭州'],
+					
+			    })
+			}
+			//构造一个Select
+			function Select(obj){
+				this.obj=obj
+				this.default={
+					data:['北京','上海','杭州'],
+					
+				}
+			}
+			
+			//初始化
+			Select.prototype.init=function(options){
+				extend(this.default,options)
+				
+		        this.creatediv()
+				this.clicks()
+			
+				
+			}
+			
+			
+			//点击创建
+			Select.prototype.creatediv=function(){
+				var This=this
+				this.ocrebox=document.createElement("ul")
+		   	    this.ocrebox.className="dialog"
+		     	this.ocrebox.innerHTML=
+		    	`<li>`+this.default.data[0]+`</li><li>`+this.default.data[1]+`</li><li>`+this.default.data[2]+`</li>`
+		   	
+		   	    document.body.appendChild(this.ocrebox)
+			}
+			
+			//点击传值
+			Select.prototype.clicks=function(){
+				var This=this
+				var top=document.getElementById("top")
+                var oul=document.getElementsByClassName('dialog')
+                var oLis=this.ocrebox.children
+            
+//                  alert(oLis[1].innerHTML)
+                for(var i=0; i<oLis.length ;i++){
+                	oLis[i].onclick=function(){
+                		top.innerHTML=this.innerHTML
+                		document.body.removeChild(This.ocrebox)
+                	}
+                	
+                	
+                }
+
+				
+			}
+			
+			function extend(obj1,obj2){
+				for(var arr in obj2){
+					obj1[arr]=obj2[arr]
+				}
+			}
+		</script>
+	</body>
+</html>
